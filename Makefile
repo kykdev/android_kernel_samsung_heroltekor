@@ -4,6 +4,8 @@ SUBLEVEL = 14
 EXTRAVERSION =
 NAME = Shuffling Zombie Juror
 
+export PLATFORM_VERSION=7.0
+
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
 # More info can be located in ./README
@@ -249,7 +251,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 ARCH            ?= arm64
-CROSS_COMPILE   ?= ../PLATFORM/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+CROSS_COMPILE   ?= $(HOME)/android/toolchain/aarch64-linux-android-6.2-linaro/bin/aarch64-linux-android-
 
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
@@ -414,6 +416,12 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Wno-format-security \
 		   -Werror \
 		   -std=gnu89
+
+KBUILD_CFLAGS   += -Wno-unused-const-variable \
+		   -Wno-misleading-indentation \
+		   -Wno-logical-not-parentheses \
+		   -Wno-overflow -Wno-switch-bool \
+		   -Wno-tautological-compare
 
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
@@ -641,9 +649,10 @@ all: vmlinux
 include $(srctree)/arch/$(SRCARCH)/Makefile
 
 KBUILD_CFLAGS	+= $(call cc-option,-fno-delete-null-pointer-checks,)
+KBUILD_CFLAGS	+= $(call cc-disable-warning,maybe-uninitialized,)
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
-KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
+KBUILD_CFLAGS	+= -Os
 else
 KBUILD_CFLAGS	+= -O2
 endif

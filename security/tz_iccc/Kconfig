@@ -2,10 +2,10 @@
 # TZ iccc configuration
 #
 config TZ_ICCC_MOS_SUPPORT
-	def_bool ANDROID_VERSION = "60001"
+	bool "TZ ICCC MOS SUPPORT"
 
 config TZ_ICCC_NOS_SUPPORT
-	def_bool ANDROID_VERSION = "70000"
+	bool "TZ ICCC NOS SUPPORT"
 
 config TZ_ICCC
 	bool "TZ ICCC"
