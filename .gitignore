@@ -96,3 +96,10 @@ x509.genkey
 
 # Kconfig presets
 all.config
+
+# Build related files
+/out/
+/build/
+/build.log
+/build.sh
+*.pyc
