@@ -4,6 +4,8 @@ SUBLEVEL = 14
 EXTRAVERSION =
 NAME = Shuffling Zombie Juror
 
+export PLATFORM_VERSION=7.0
+
 # *DOCUMENTATION*
 # To see a list of typical targets execute "make help"
 # More info can be located in ./README
@@ -417,6 +419,12 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Werror \
 		   -std=gnu89
 
+KBUILD_CFLAGS   += -Wno-unused-const-variable \
+		   -Wno-misleading-indentation \
+		   -Wno-logical-not-parentheses \
+		   -Wno-overflow -Wno-switch-bool \
+		   -Wno-tautological-compare
+
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS   := -D__ASSEMBLY__
@@ -643,9 +651,10 @@ all: vmlinux
 include $(srctree)/arch/$(SRCARCH)/Makefile
 
 KBUILD_CFLAGS	+= $(call cc-option,-fno-delete-null-pointer-checks,)
+KBUILD_CFLAGS	+= $(call cc-disable-warning,maybe-uninitialized,)
 
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
-KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
+KBUILD_CFLAGS	+= -Os
 else
 KBUILD_CFLAGS	+= -O2
 endif
